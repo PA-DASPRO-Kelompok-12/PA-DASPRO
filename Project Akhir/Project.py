@@ -151,17 +151,87 @@ def tambah_akun():
 def lihat_akun():
     os.system("cls")
     data_pt()
+    
     while True:
-        input_back = input("Apakah anda ingin kembali ke fitur admin? (y/n) : ")
-        if input_back == "y":
-            admin()
-        elif input_back == "n":
+        print("==== Opsi ====")
+        print("1. Urutkan berdasarkan Nama Panjang")
+        print("2. Cari Akun berdasarkan Username")
+        print("3. Kembali ke menu admin")
+        option = input("Pilih opsi (1/2/3): ")
+        
+        if option == "1":
+            sorted_data = sort_by_name(data)
+            display_sorted_data(sorted_data)
+        elif option == "2":
+            search_username = input("Masukkan Username yang ingin Anda cari: ")
+            found_data = search_by_username(data, search_username)
+            if found_data:
+                display_found_data(found_data)
+            else:
+                print("Username tidak ditemukan.")
+        elif option == "3":
             admin()
         else:
-            print("Pemilihan yang anda masukan tidak sesuai opsi, Pilih y/n")
-        continue
+            print("Opsi tidak valid. Pilih opsi yang sesuai (1/2/3).")
 
+def sort_by_name(data):
+    sorted_data = sorted(zip(data["Nama_Panjang"], data["Username"], data["PIN"], data["No_HP"], data["Saldo_EMoney"]), key=lambda x: x[0][0])
+    return {
+        "Nama_Panjang": [item[0] for item in sorted_data],
+        "Username": [item[1] for item in sorted_data],
+        "PIN": [item[2] for item in sorted_data],
+        "No_HP": [item[3] for item in sorted_data],
+        "Saldo_EMoney": [item[4] for item in sorted_data]
+    }
 
+def display_sorted_data(sorted_data):
+    table = PrettyTable()
+    table.field_names = ["No", "Nama Panjang", "Username", "PIN", "No HP", "Saldo E-Money"]
+
+    for i, (nama_panjang, username, pin, no_hp, saldo_emoney) in enumerate(zip(
+        sorted_data["Nama_Panjang"],
+        sorted_data["Username"],
+        sorted_data["PIN"],
+        sorted_data["No_HP"],
+        sorted_data["Saldo_EMoney"]
+    )):
+        table.add_row([i + 1, nama_panjang[0], username, pin, no_hp, saldo_emoney])
+
+    print(table)
+
+def search_by_username(data, search_username):
+    found_data = {
+        "Nama_Panjang": [],
+        "Username": [],
+        "PIN": [],
+        "No_HP": [],
+        "Saldo_EMoney": []
+    }
+
+    for i, username in enumerate(data["Username"]):
+        if username == search_username:
+            found_data["Nama_Panjang"].append(data["Nama_Panjang"][i])
+            found_data["Username"].append(username)
+            found_data["PIN"].append(data["PIN"][i])
+            found_data["No_HP"].append(data["No_HP"][i])
+            found_data["Saldo_EMoney"].append(data["Saldo_EMoney"][i])
+
+    return found_data
+
+def display_found_data(found_data):
+    table = PrettyTable()
+    table.field_names = ["No", "Nama Panjang", "Username", "PIN", "No HP", "Saldo E-Money"]
+
+    for i, (nama_panjang, username, pin, no_hp, saldo_emoney) in enumerate(zip(
+        found_data["Nama_Panjang"],
+        found_data["Username"],
+        found_data["PIN"],
+        found_data["No_HP"],
+        found_data["Saldo_EMoney"]
+    )):
+        table.add_row([i + 1, nama_panjang[0], username, pin, no_hp, saldo_emoney])
+
+    print(table)
 def perbarui_akun():
     data_pt()
     input_username = input("Masukan Username yang ingin diubah : ")
@@ -392,7 +462,7 @@ def cek_informasi_akun(username):
         print("=========================================")
         print(f"  Saldo E-Money: Rp.{format_saldo.replace(',', '.')}")
         print("=========================================")
-        print(f"  Nomor HP: 0{no_hp}")
+        print(f"  Nomor HP: {no_hp}")
         os.system("pause")
         os.system("cls")
         pembeli(username)
@@ -409,23 +479,25 @@ def daftar():
             try:
                 print("▂ ▃ ▄ ▅ ▆ ▇ █ Sign Up Account █ ▇ ▆ ▅ ▄ ▃ ▂")
 
+
                 input_nama = str(input("Masukan nama panjang anda : "))
                 input_username = input("Masukan Username anda : ")
                 if input_username in data["Username"]:
                     print("Username sudah digunakan. Silakan gunakan username yang lain.")
                     continue
-                input_nohp = int(input("Masukan No HP anda : "))
-                random_pin = generate_random_pin()
+                input_nohp = input("Masukan No HP anda : ")
+                if input_nohp.isdigit() and len(input_nohp) == 12:
+                    data["No_HP"].append(input_nohp)
 
+                random_pin = generate_random_pin()
                 data["Nama_Panjang"].append([input_nama])
                 data["Username"].append(input_username)
-                data["Saldo_EMoney"].append(0)
-                data["No_HP"].append(str(input_nohp))
                 data["PIN"].append(random_pin)
+                data["Saldo_EMoney"].append(0)
 
                 os.system("cls")
                 print("◇─◇──◇─────◇──◇─◇─◇─◇──◇─────◇──◇─◇─◇─◇──◇─────◇──◇─◇─◇─◇──◇─────◇──◇─◇")
-                print(f"Selamat Datang {input_nama}, Dengan username {input_username} dan Nomor HP 0{input_nohp}")
+                print(f"Selamat Datang {input_nama}, Dengan username {input_username} dan Nomor HP {input_nohp}")
                 print("╔═════════════════════════════════════════════════════╗")
                 print(f"  Saldo E-Money Anda: Rp.{data['Saldo_EMoney'][-1]:,}, HARAP MELAKUKAN PENGISIAN!")
                 print("╚═════════════════════════════════════════════════════╝")
