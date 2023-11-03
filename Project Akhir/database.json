@@ -1,0 +1,51 @@
+{
+    "Admin": {
+        "Username": "admin",
+        "PIN": "admin"
+    },
+    "Nama_Panjang": [
+        [
+            "Muhammad Rizky Setiawan"
+        ],
+        [
+            "Muhammad Nabil Ma'ruf"
+        ],
+        [
+            "Reyfaldho Alfarazel"
+        ],
+        [
+            "Esra Fernanda Siregar"
+        ],
+        [
+            "Farhan Imanudin"
+        ]
+    ],
+    "Username": [
+        "Rizky",
+        "Nabil",
+        "Arey",
+        "Regarox",
+        "farhan"
+    ],
+    "PIN": [
+        123456,
+        789101,
+        111213,
+        772035,
+        363739
+    ],
+    "No_HP": [
+        "081250641423",
+        "081779524679",
+        "089723421364",
+        "089123881238",
+        "81245367421"
+    ],
+    "Saldo_EMoney": [
+        1140000,
+        220000,
+        150000,
+        170000,
+        0
+    ]
+}
